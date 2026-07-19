@@ -1,5 +1,5 @@
 # EcoFlow Cloud Integration for Home Assistant
-[![GitHub release](https://img.shields.io/github/release/tolwi/hassio-ecoflow-cloud?include_prereleases=&sort=semver&color=blue)](https://github.com/tolwi/hassio-ecoflow-cloud/releases/)
+[![GitHub release](https://img.shields.io/github/release/tolwi/hassio-ecoflow-cloud?include_prereleases=&sort=semver&color=blue)](https://github.com/kleinermichi/hassio-ecoflow-cloud/releases/)
 [![issues - hassio-ecoflow-cloud](https://img.shields.io/github/issues/tolwi/hassio-ecoflow-cloud)](https://github.com/tolwi/hassio-ecoflow-cloud/issues)
 [![GH-code-size](https://img.shields.io/github/languages/code-size/tolwi/hassio-ecoflow-cloud?color=red)](https://github.com/tolwi/hassio-ecoflow-cloud)
 [![GH-last-commit](https://img.shields.io/github/last-commit/tolwi/hassio-ecoflow-cloud?style=flat-square)](https://github.com/tolwi/hassio-ecoflow-cloud/commits/main)
