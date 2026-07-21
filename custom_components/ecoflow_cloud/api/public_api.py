@@ -38,6 +38,22 @@ class EcoflowPublicApiClient(EcoflowApiClient):
         self._accept_mqqt_certification(response)
         self.mqtt_info.client_id = f"Hassio-{self.mqtt_info.username}-{self.group.replace(' ', '-')}"
 
+    def _infer_device_type(self, device: dict[str, Any]) -> str:
+        product_name = device.get("productName")
+        if isinstance(product_name, str) and product_name.strip() and product_name.lower() != "undefined":
+            return product_name
+
+        device_name = device.get("deviceName")
+        if isinstance(device_name, str):
+            device_list = list(self._device_registry().keys())
+            device_list.sort(key=len, reverse=True)
+            normalized_device_name = device_name.lower()
+            for device_type in device_list:
+                if normalized_device_name.startswith(device_type.lower()):
+                    return device_type
+
+        return "undefined"
+
     async def fetch_all_available_devices(self) -> list[EcoflowDeviceInfo]:
         _LOGGER.info("Requesting all devices")
         response = await self.call_api("/device/list")
@@ -46,16 +62,7 @@ class EcoflowPublicApiClient(EcoflowApiClient):
         for device in response["data"]:
             _LOGGER.debug(str(device))
             sn = device["sn"]
-            product_name = device.get("productName", "undefined")
-            if product_name == "undefined":
-                from ..devices.registry import device_by_product
-
-                device_list = list(device_by_product.keys())
-                device_list.sort(key=len, reverse=True)
-                for devicetype in device_list:
-                    if "deviceName" in device and device["deviceName"].lower().startswith(devicetype.lower()):
-                        product_name = devicetype
-                        break
+            product_name = self._infer_device_type(device)
             device_name = device.get("deviceName", f"{product_name}-{sn}")
             status = int(device["online"])
             result.append(self._create_device_info(sn, device_name, product_name, status))

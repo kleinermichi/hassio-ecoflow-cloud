@@ -97,6 +97,17 @@ class StreamAC(BaseDevice):
             StoredEnergyFromSocSensorEntity(
                 client, self, "cmsBattFullEnergy", "cmsBattSoc", const.STREAM_STORED_ENERGY
             ),
+            # Public API / quota payload exposes the same values through the
+            # top-level keys below, which are often more reliable for Stream
+            # devices than the older nested MQTT payload structure.
+            BatteryLimitSensorEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL),
+            BatteryLimitSensorEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL),
+            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
+            WattsSensorEntity(client, self, "powGetSysGrid", const.STREAM_POWER_GRID),
+            WattsSensorEntity(client, self, "powGetSysLoad", const.STREAM_GET_SYS_LOAD),
+            WattsSensorEntity(client, self, "powGetBpCms", const.STREAM_POWER_BATTERY),
+            WattsSensorEntity(client, self, "gridConnectionPower", const.STREAM_POWER_AC),
+            LevelSensorEntity(client, self, "backupReverseSoc", "Backup Reserve SOC", False, True),
             # "cmsBattSoh": 100.0,
             # "cmsBmsRunState": 1,
             # "cmsChgDsgState": 2,
@@ -130,6 +141,9 @@ class StreamAC(BaseDevice):
             # "feedGridMode": 2,
             # "feedGridModePowLimit": 800,
             # "feedGridModePowMax": 800,
+            # The public API also emits operating-mode flags that are useful for
+            # Stream devices but were previously not surfaced as entities.
+            LevelSensorEntity(client, self, "feedGridMode", const.STREAM_FEED_IN_CONTROL, False, True),
             # "fullCap": 100000,
             CapacitySensorEntity(client, self, "fullCap", const.STREAM_FULL_CAPACITY, False),
             # "gridCodeSelection": "GRID_STD_CODE_UTE_MAINLAND",
