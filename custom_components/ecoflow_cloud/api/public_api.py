@@ -79,8 +79,9 @@ class EcoflowPublicApiClient(EcoflowApiClient):
         for sn in target_devices:
             try:
                 raw = await self.call_api("/device/quota/all", {"sn": sn})
-                if "data" in raw:
-                    self.devices[sn].data.add_data(PreparedData(None, raw["data"], raw, False))
+                payload = raw.get("data", raw)
+                if isinstance(payload, dict):
+                    self.devices[sn].data.add_data(PreparedData(None, payload, raw, False))
             except Exception as exception:
                 _LOGGER.error(exception, exc_info=True)
                 _LOGGER.error("Error retrieving %s", sn)

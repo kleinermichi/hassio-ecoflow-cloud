@@ -116,19 +116,18 @@ class EcoflowDataHolder:
         if params is None:
             return
 
-        candidate_payloads: list[dict[str, Any]] = []
-        for key in ("params", "quotaMap", "data"):
-            value = params.get(key)
-            if isinstance(value, dict):
-                candidate_payloads.append(value)
-
-        if candidate_payloads:
-            for payload in candidate_payloads:
-                self.params.update(payload)
-        else:
-            self.params.update(params)
+        merged_params: dict[str, Any] = {}
+        self.__merge_payload(merged_params, params)
+        self.params.update(merged_params)
 
         self.set_params_time = dt.utcnow()
+
+    def __merge_payload(self, target: dict[str, Any], payload: dict[str, Any]) -> None:
+        for key, value in payload.items():
+            if key in {"params", "quotaMap", "data"} and isinstance(value, dict):
+                self.__merge_payload(target, value)
+            else:
+                target[key] = value
 
     def __accept_prepared_data(self, data: PreparedData, raw_data_acceptor: Callable[[dict[str, Any]], None]):
         if data.online is not None:
