@@ -14,6 +14,7 @@ from custom_components.ecoflow_cloud.sensor import (
     BatteryLimitSensorEntity,
     CapacitySensorEntity,
     CumulativeCapacitySensorEntity,
+    QuotaScheduledStatusSensorEntity,
     CyclesSensorEntity,
     EnergySensorEntity,
     InWattsSensorEntity,
@@ -453,4 +454,6 @@ class StreamAC(BaseDevice):
         return res
 
     def _status_sensor(self, client: EcoflowApiClient) -> StatusSensorEntity:
-        return StatusSensorEntity(client, self)
+        # Stream systems often expose authoritative power values on the main
+        # system SN via quota/all, so refresh quota periodically.
+        return QuotaScheduledStatusSensorEntity(client, self, 60)
