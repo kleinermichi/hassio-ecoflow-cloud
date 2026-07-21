@@ -136,6 +136,7 @@ class EcoFlowDictEntity(EcoFlowAbstractDataEntity):
 
     async def async_added_to_hass(self):
         await super().async_added_to_hass()
+        self._updated(self.coordinator.data.data_holder.params)
         # d = self._device.data.params_observable().subscribe(self._updated)
         # self.async_on_remove(d.dispose)
 

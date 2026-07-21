@@ -93,22 +93,21 @@ class StreamAC(BaseDevice):
             # via cmsBattSoc rather than soc/f32ShowSoc, so expose it directly
             # as a battery-level sensor (auto_enable so it only activates on
             # firmware that actually sends the field).
-            LevelSensorEntity(client, self, "cmsBattSoc", const.STREAM_BATTERY_LEVEL, False, True),
+            LevelSensorEntity(client, self, "cmsBattSoc", const.STREAM_BATTERY_LEVEL, True, True),
             StoredEnergyFromSocSensorEntity(
                 client, self, "cmsBattFullEnergy", "cmsBattSoc", const.STREAM_STORED_ENERGY
             ),
             # Public API / quota payload exposes the same values through the
             # top-level keys below, which are often more reliable for Stream
             # devices than the older nested MQTT payload structure.
-            BatteryLimitSensorEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL),
-            BatteryLimitSensorEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL),
-            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
-            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
-            WattsSensorEntity(client, self, "powGetSysGrid", const.STREAM_POWER_GRID),
-            WattsSensorEntity(client, self, "powGetSysLoad", const.STREAM_GET_SYS_LOAD),
-            WattsSensorEntity(client, self, "powGetBpCms", const.STREAM_POWER_BATTERY),
-            WattsSensorEntity(client, self, "gridConnectionPower", const.STREAM_POWER_AC),
-            LevelSensorEntity(client, self, "backupReverseSoc", "Backup Reserve SOC", False, True),
+            BatteryLimitSensorEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL, True),
+            BatteryLimitSensorEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL, True),
+            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM, True),
+            WattsSensorEntity(client, self, "powGetSysGrid", const.STREAM_POWER_GRID, True),
+            WattsSensorEntity(client, self, "powGetSysLoad", const.STREAM_GET_SYS_LOAD, True),
+            WattsSensorEntity(client, self, "powGetBpCms", const.STREAM_POWER_BATTERY, True),
+            WattsSensorEntity(client, self, "gridConnectionPower", const.STREAM_POWER_AC, True),
+            LevelSensorEntity(client, self, "backupReverseSoc", "Backup Reserve SOC", True, True),
             # "cmsBattSoh": 100.0,
             # "cmsBmsRunState": 1,
             # "cmsChgDsgState": 2,
