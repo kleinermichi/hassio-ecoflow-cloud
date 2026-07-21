@@ -103,6 +103,7 @@ class StreamAC(BaseDevice):
             BatteryLimitSensorEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL),
             BatteryLimitSensorEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL),
             WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
+            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
             WattsSensorEntity(client, self, "powGetSysGrid", const.STREAM_POWER_GRID),
             WattsSensorEntity(client, self, "powGetSysLoad", const.STREAM_GET_SYS_LOAD),
             WattsSensorEntity(client, self, "powGetBpCms", const.STREAM_POWER_BATTERY),

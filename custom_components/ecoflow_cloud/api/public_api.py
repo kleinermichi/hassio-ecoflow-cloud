@@ -78,13 +78,30 @@ class EcoflowPublicApiClient(EcoflowApiClient):
 
         for sn in target_devices:
             try:
-                raw = await self.call_api("/device/quota/all", {"sn": sn})
+                quota_sn = sn
+                if self._is_stream_system(sn):
+                    main_sn_response = await self.call_api("/device/system/main/sn", {"sn": sn})
+                    main_sn = main_sn_response.get("data", {}).get("sn")
+                    if isinstance(main_sn, str) and main_sn:
+                        quota_sn = main_sn
+
+                raw = await self.call_api("/device/quota/all", {"sn": quota_sn})
                 payload = raw.get("data", raw)
                 if isinstance(payload, dict):
                     self.devices[sn].data.add_data(PreparedData(None, payload, raw, False))
             except Exception as exception:
                 _LOGGER.error(exception, exc_info=True)
                 _LOGGER.error("Error retrieving %s", sn)
+
+    def _is_stream_system(self, device_sn: str) -> bool:
+        device = self.devices.get(device_sn)
+        if device is None:
+            return False
+
+        device_type = getattr(device.device_data, "device_type", "") or ""
+        device_name = getattr(device.device_data, "name", "") or ""
+        normalized = f"{device_type} {device_name}".lower()
+        return "stream" in normalized
 
     async def call_api(self, endpoint: str, params: dict[str, str] | None = None) -> dict:
         self.nonce = str(random.randint(10000, 1000000))
