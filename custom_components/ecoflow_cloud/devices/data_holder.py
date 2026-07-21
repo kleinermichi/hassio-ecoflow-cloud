@@ -113,9 +113,22 @@ class EcoflowDataHolder:
         self.__accept_prepared_data(data, self.__update_params)
 
     def __update_params(self, params: dict[str, Any]):
-        if "params" in params:
-            self.params.update(params["params"])
-            self.set_params_time = dt.utcnow()
+        if params is None:
+            return
+
+        candidate_payloads: list[dict[str, Any]] = []
+        for key in ("params", "quotaMap", "data"):
+            value = params.get(key)
+            if isinstance(value, dict):
+                candidate_payloads.append(value)
+
+        if candidate_payloads:
+            for payload in candidate_payloads:
+                self.params.update(payload)
+        else:
+            self.params.update(params)
+
+        self.set_params_time = dt.utcnow()
 
     def __accept_prepared_data(self, data: PreparedData, raw_data_acceptor: Callable[[dict[str, Any]], None]):
         if data.online is not None:

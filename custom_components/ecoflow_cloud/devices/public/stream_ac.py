@@ -203,8 +203,6 @@ class StreamAC(BaseDevice):
             # "plugInInfoPvFlag": false,
             # "plugInInfoPvVol": 0.0,
             # "powConsumptionMeasurement": 2,
-            # "powGetBpCms": 1915.0862,
-            WattsSensorEntity(client, self, "powGetBpCms", const.STREAM_POWER_BATTERY),
             # Per-PV power, voltage, current (Stream Ultra / Ultra X / AC Pro).
             # Per-PV reporting depends on the firmware version installed:
             #   - Firmware <  1.0.1.88: powGetPv / powGetPv2..4 emitted, per-PV
@@ -238,16 +236,10 @@ class StreamAC(BaseDevice):
             AmpSensorEntity(client, self, "plugInInfoPv2Amp", const.STREAM_IN_AMPS_PV_2, False, True),
             AmpSensorEntity(client, self, "plugInInfoPv3Amp", const.STREAM_IN_AMPS_PV_3, False, True),
             AmpSensorEntity(client, self, "plugInInfoPv4Amp", const.STREAM_IN_AMPS_PV_4, False, True),
-            # "powGetPvSum": 2051.3975,
-            WattsSensorEntity(client, self, "powGetPvSum", const.STREAM_POWER_PV_SUM),
             # "powGetSchuko1": 0.0,
             WattsSensorEntity(client, self, "powGetSchuko1", const.STREAM_GET_SCHUKO1, False, True),
             # "powGetSchuko2": 18.654325,
             WattsSensorEntity(client, self, "powGetSchuko2", const.STREAM_GET_SCHUKO2, False, True),
-            # "powGetSysGrid": -135.0,
-            WattsSensorEntity(client, self, "powGetSysGrid", const.STREAM_POWER_GRID),
-            # "powGetSysLoad": 0.0,
-            WattsSensorEntity(client, self, "powGetSysLoad", const.STREAM_GET_SYS_LOAD),
             # "powGetSysLoadFromBp": 0.0,
             WattsSensorEntity(client, self, "powGetSysLoadFromBp", const.STREAM_GET_SYS_LOAD_FROM_BP),
             # "powGetSysLoadFromGrid": 0.0,
