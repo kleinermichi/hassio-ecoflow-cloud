@@ -115,8 +115,6 @@ class StreamAC(BaseDevice):
             # "cmsDsgRemTime": 5939,
             # "cmsMaxChgSoc": 100,
             # "cmsMinDsgSoc": 5,
-            BatteryLimitSensorEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL),
-            BatteryLimitSensorEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL),
             # "curSensorNtcNum": 0,
             # "curSensorTemp": [],
             # "cycleSoh": 100.0,
@@ -275,7 +273,7 @@ class StreamAC(BaseDevice):
             # "seriesConnectDeviceId": 1,
             # "seriesConnectDeviceStatus": "MASTER",
             # "soc": 46,
-            LevelSensorEntity(client, self, "soc", const.STREAM_POWER_BATTERY)
+            LevelSensorEntity(client, self, "soc", const.STREAM_BATTERY_LEVEL)
             .attr("designCap", const.ATTR_DESIGN_CAPACITY, 0)
             .attr("fullCap", const.ATTR_FULL_CAPACITY, 0)
             .attr("remainCap", const.ATTR_REMAIN_CAPACITY, 0),
